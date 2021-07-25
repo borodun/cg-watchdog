@@ -16,7 +16,6 @@ import (
 var (
 	cpuUsageCgroup    *os.File
 	memMaxUsageCgroup *os.File
-	table             *os.File
 	ctx               context.Context
 	client            *mongo.Client
 	collection        *mongo.Collection
@@ -24,8 +23,6 @@ var (
 
 var cpuUsage = make([]byte, 100)
 var maxMemUsage = make([]byte, 100)
-
-const measurementsFolder = "measurements"
 
 func OpenFiles() {
 	var err error
@@ -57,16 +54,10 @@ func CloseFiles() {
 	}
 	log.Println("/sys/fs/cgroup/cpuacct/cpuacct.usage closed successfuly")
 
-	tableName := table.Name()
-	err = table.Close()
-	if err != nil {
-		log.Print(err)
-	}
-	log.Printf("%s closed successfuly\n", tableName)
-
 	if err = client.Disconnect(ctx); err != nil {
 		panic(err)
 	}
+	log.Println("Disconnected from mongo")
 }
 
 func ReadCpuUsage() int64 {
@@ -131,7 +122,7 @@ func LoginMongo() {
 func WriteMeasurements(startTime time.Time, funcName string, cpuUsage float64, memoryMaxUsage int64) {
 	ctxx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	_, err := collection.InsertOne(ctxx, bson.D{{"time", startTime.String()}, {"function_name", funcName}, {"cpu_used", cpuUsage}, {"max_memory", memoryMaxUsage}})
+	_, err := collection.InsertOne(ctxx, bson.D{{"time", startTime.String()}, {"function_name", funcName}, {"cpu_used", cpuUsage}, {"max_memory_diff", memoryMaxUsage}})
 	if err != nil {
 		log.Fatalln("Error while inserting data to collection")
 	}

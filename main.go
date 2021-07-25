@@ -1,5 +1,5 @@
 // Copyright (c) Alex Ellis 2017. All rights reserved.
-// Licensed under the MIT license. See LICENSE cpuUsageCgroup in the project root for full license information.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 // Package main provides the OpenFaaS Classic Watchdog. The Classic Watchdog is a HTTP
 // shim for serverless functions providing health-checking, graceful shutdowns,
@@ -10,7 +10,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/openfaas/classic-watchdog/tools"
+	"github.com/borodun/of-watchdog/tools"
 	"log"
 	"net/http"
 	"os"
@@ -20,8 +20,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/openfaas/classic-watchdog/metrics"
-	"github.com/openfaas/classic-watchdog/types"
+	"github.com/borodun/of-watchdog/metrics"
+	"github.com/borodun/of-watchdog/types"
 )
 
 var (

@@ -6,7 +6,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/openfaas/classic-watchdog/tools"
+	"github.com/borodun/of-watchdog/tools"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -20,7 +20,7 @@ import (
 
 	limiter "github.com/openfaas/faas-middleware/concurrency-limiter"
 
-	"github.com/openfaas/classic-watchdog/types"
+	"github.com/borodun/of-watchdog/types"
 )
 
 type requestInfo struct {
@@ -76,7 +76,9 @@ func pipeRequest(config *WatchdogConfig, w http.ResponseWriter, r *http.Request,
 	log.Println("Forking fprocess.")
 
 	before := tools.ReadCpuUsage()
+	memBefore := tools.ReadMaxMemUsage()
 	log.Printf("Cpu usage before function: %dusec", before)
+	log.Printf("Max mem before function: %dbyte", memBefore)
 
 	targetCmd := exec.Command(parts[0], parts[1:]...)
 
@@ -169,13 +171,13 @@ func pipeRequest(config *WatchdogConfig, w http.ResponseWriter, r *http.Request,
 	}
 
 	after := tools.ReadCpuUsage()
-	memMaxUsageBytes := tools.ReadMaxMemUsage()
+	memAfter := tools.ReadMaxMemUsage()
 	log.Printf("Cpu usage after function: %dusec\n", after)
 	log.Printf("Cpu time used on function: %fsec\n", float64(after-before)/1e09)
-	log.Printf("Max memory usage in bytes: %d", memMaxUsageBytes)
+	log.Printf("Max memory usage after function: %dbytes", memAfter)
 
 	go func() {
-		tools.WriteMeasurements(startTime, config.functionName, float64(after-before)/1e09, memMaxUsageBytes)
+		tools.WriteMeasurements(startTime, config.functionName, float64(after-before)/1e09, memAfter-memBefore)
 	}()
 
 	if err != nil {
