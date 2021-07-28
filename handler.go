@@ -176,9 +176,7 @@ func pipeRequest(config *WatchdogConfig, w http.ResponseWriter, r *http.Request,
 	log.Printf("Cpu time used on function: %fsec\n", float64(after-before)/1e09)
 	log.Printf("Max memory usage after function: %dbytes", memAfter)
 
-	go func() {
-		tools.WriteMeasurements(startTime, config.functionName, float64(after-before)/1e09, memAfter-memBefore)
-	}()
+	tools.WriteMeasurements(startTime, config.functionName, float64(after-before)/1e09, memAfter-memBefore)
 
 	if err != nil {
 		if config.writeDebug == true {
