@@ -1,3 +1,14 @@
+## What this is about
+This is a modified classic-watchdog I've created for measuring CPU utilization of a function in OpenFaaS and uploading it to mongodb. This watchdog is used in my [go template](https://github.com/borodun/of-templates/tree/main/template/cpu-mem-go)
+
+### Required environment variables
+
+| Option                 | Usage        |
+|------------------------|--------------|
+| `function_name`        | Function name that will be used to count total cpu usage per function |
+| `mongo_uri`            | [Mongo URI string](https://docs.mongodb.com/manual/reference/connection-string/)  is needed for connecting to mongodb |
+
+
 Watchdog
 ==========
 
