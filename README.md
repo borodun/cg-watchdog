@@ -1,4 +1,4 @@
-## What this is about
+## What is this
 This is a modified classic-watchdog I've created for measuring CPU utilization of a function in OpenFaaS and uploading it to mongodb. This watchdog is used in my [go template](https://github.com/borodun/of-templates/tree/main/template/cpu-mem-go)
 
 ### Required environment variables
