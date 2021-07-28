@@ -5,7 +5,7 @@ This is a modified classic-watchdog I've created for measuring CPU utilization o
 
 | Option                 | Usage        |
 |------------------------|--------------|
-| `function_name`        | Function name that will be used to count total cpu usage per function |
+| `function_name`        | Function name that will be used to count total cpu usage per function with [custom metrics](https://github.com/borodun/of-metrics)|
 | `mongo_uri`            | [Mongo URI string](https://docs.mongodb.com/manual/reference/connection-string/)  is needed for connecting to mongodb |
 
 
